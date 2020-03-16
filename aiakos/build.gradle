@@ -1,0 +1,16 @@
+apply from: rootProject.file('gradle/module.gradle')
+
+android {
+    defaultConfig {
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation xdeps.junit
+    androidTestImplementation xdeps.supportx.test.junit
+    androidTestImplementation xdeps.supportx.test.espresso
+}
+
