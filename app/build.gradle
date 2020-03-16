@@ -1,0 +1,32 @@
+apply from: rootProject.file('gradle/application.gradle')
+
+android {
+
+    defaultConfig {
+        applicationId "com.txtgenius.anorak"
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation xdeps.kotlin.stdlib
+    implementation xdeps.kotlin.ktx
+
+    implementation xdeps.supportx.appcompat
+
+    testImplementation xdeps.junit
+    androidTestImplementation xdeps.supportx.test.junit
+    androidTestImplementation xdeps.supportx.test.espresso
+}

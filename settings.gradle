@@ -1,0 +1,3 @@
+rootProject.name='Anorak'
+include ':app'
+include ':aiakos'

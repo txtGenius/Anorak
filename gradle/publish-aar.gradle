@@ -1,0 +1,53 @@
+apply plugin: 'maven-publish'
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompile.classpath
+        }
+    }
+    exclude '**/R.html', '**/R.*.html', '**/index.html', '**/*.kt'
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+def getMavenUrl() {
+    return android.defaultConfig.versionName.contains("SNAPSHOT") ? project.property("MAVEN_URL_SNAPSHOT") : project.property("MAVEN_URL_RELEASE")
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId GROUP_ID
+                artifactId ARTIFACT_ID
+                version = android.defaultConfig.versionName
+
+                from components.release
+
+                artifact androidJavadocsJar
+                artifact androidSourcesJar
+            }
+        }
+
+        repositories {
+            maven {
+                url getMavenUrl()
+                credentials {
+                    username project.property("MAVEN_USER_NAME")
+                    password project.property("MAVEN_PASSWORD")
+                }
+            }
+        }
+    }
+}
