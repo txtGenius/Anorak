@@ -9,7 +9,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    api xdeps.okhttp3.runtime
+    implementation xdeps.okhttp3.loggingInterceptor
+
+    api xdeps.rxjava2
+    implementation xdeps.rxandroid
+
     testImplementation xdeps.junit
+    testImplementation xdeps.fastjson
     androidTestImplementation xdeps.supportx.test.junit
     androidTestImplementation xdeps.supportx.test.espresso
 }
